@@ -1,0 +1,45 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: my-namespace
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudnative-monitoringapp-deployment
+  namespace: my-namespace
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: cloudnative-monitoringapp
+  template:
+    metadata:
+      labels:
+        app: cloudnative-monitoringapp
+    spec:
+      containers:
+      - name: cloudnative-monitoringapp
+        image: public.ecr.aws/v9e0r7f8/cloudnative-monitoringapp:latest
+        ports:
+        - containerPort: 5000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloudnative-monitoringapp-service
+  namespace: my-namespace
+spec:
+  type: LoadBalancer
+  selector:
+    app: cloudnative-monitoringapp
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 5000
+
+
+#kubectl apply -f deployment.yaml
