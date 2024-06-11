@@ -15,6 +15,7 @@
 
 # ** for step by step Demonstration!**
 
+![Capture](https://github.com/yogeshsunny05/CloudNative-MonitoringApp/assets/139520226/80c9a0e9-735c-4ed5-a72d-b5967465f247)
 
 
 
