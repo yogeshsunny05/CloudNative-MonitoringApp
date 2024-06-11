@@ -149,6 +149,7 @@ docker push <ecr_repo_uri>:<tag>
 Set Up VPC Using Console:
 
 In AWS console, create VPC, subnet, internet gateway, and route table.
+
 ![Screenshot 2024-06-11 231624](https://github.com/yogeshsunny05/CloudNative-MonitoringApp/assets/139520226/49d6d2fa-b804-433c-af2c-f49b1d146642)
 
 
