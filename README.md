@@ -100,7 +100,7 @@ To build the Docker image, execute the following command:
 ```
 docker build -t <image_name> .
 ```
-
+![Screenshot 2024-06-11 230210](https://github.com/yogeshsunny05/CloudNative-MonitoringApp/assets/139520226/e38f60f3-67a8-4987-bc22-dd73d9f3bda9)
 ### Step 3: Run the Docker container
 
 To run the Docker container, execute the following command:
@@ -149,6 +149,9 @@ docker push <ecr_repo_uri>:<tag>
 Set Up VPC Using Console:
 
 In AWS console, create VPC, subnet, internet gateway, and route table.
+![Screenshot 2024-06-11 231624](https://github.com/yogeshsunny05/CloudNative-MonitoringApp/assets/139520226/49d6d2fa-b804-433c-af2c-f49b1d146642)
+
+
 
 ### Step 2: Create an EKS cluster
 
@@ -235,4 +238,5 @@ This will start the Flask server in a EKS cluster .Use ElasticLoadBalancer end p
 This should direct you to your cloudnative-monitoringapp application running on your EKS cluster
 
 ![Screenshot 2024-06-11 230707](https://github.com/yogeshsunny05/CloudNative-MonitoringApp/assets/139520226/805b5943-7463-4391-9876-0aa6f40bc8bd)
+
 
