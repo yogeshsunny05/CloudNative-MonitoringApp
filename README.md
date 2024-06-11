@@ -1,6 +1,6 @@
-                                    # **Cloud Native Resource Monitoring Python App on K8s!**
+                                   # Cloud Native Resource Monitoring Python App on K8s
 
-## Things you will Learn 🤯
+## Things you will Learn 
 
 1. Python and How to create Monitoring Application in Python using Flask and psutil
 2. How to run a Python App locally.
@@ -13,12 +13,14 @@
 5. Learn Kubernetes and Create EKS cluster and Nodegroups
 6. Create Kubernetes Deployments and Services using Python!
 
-# ** for step by step Demonstration!**
+#  For step by step Demonstration !
 
-![Capture](https://github.com/yogeshsunny05/CloudNative-MonitoringApp/assets/139520226/80c9a0e9-735c-4ed5-a72d-b5967465f247)
+```
+```
+![monitoring](https://github.com/yogeshsunny05/CloudNative-MonitoringApp/assets/139520226/a82cdd9c-b61f-49e9-88aa-db6ec06c2a79)
 
-
-
+```
+```
 ## **Prerequisites** !
 
 (Things to have before starting the projects)
@@ -29,7 +31,7 @@
 - [x]  Docker and Kubectl installed.
 - [x]  Code editor (Vscode)
 
-# ✨Let’s Start the Project ✨
+# Let’s Start the Project 
 
 ## **Part 1: Deploying the Flask application locally**
 
@@ -107,28 +109,33 @@ docker run -p 5000:5000 <image_name>
 ```
 
 This will start the Flask server in a Docker container on **`localhost:5000`**. Navigate to [http://localhost:5000/](http://localhost:5000/) on your browser to access the application.
+```
+```
+
+![Screenshot 2024-06-10 163024](https://github.com/yogeshsunny05/CloudNative-MonitoringApp/assets/139520226/0abf2c26-871b-4c45-90b8-c5cf002904d5)
+```
+```
 
 ## **Part 3: Pushing the Docker image to ECR**
 
 ### **Step 1: Create an ECR repository**
 
-Create an ECR repository using Python:
+To set up an AWS ECR repository, build a Docker image, and push it to the repository, you can use the following Bash script:
 
+```bash
+#!/bin/bash
+
+# Variables
+REGION="your-region"
+REPO_NAME="your-repo-name"
+AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+
+# Create ECR repository
+aws ecr create-repository --repository-name $REPO_NAME --region $REGION
+
+# Login to ECR
+aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com
 ```
-import boto3
-
-# Create an ECR client
-ecr_client = boto3.client('ecr')
-
-# Create a new ECR repository
-repository_name = 'my-ecr-repo'
-response = ecr_client.create_repository(repositoryName=repository_name)
-
-# Print the repository URI
-repository_uri = response['repository']['repositoryUri']
-print(repository_uri)
-```
-
 ### **Step 2: Push the Docker image to ECR**
 
 Push the Docker image to ECR using the push commands on the console:
@@ -138,88 +145,104 @@ docker push <ecr_repo_uri>:<tag>
 ```
 
 ## **Part 4: Creating an EKS cluster and deploying the app using Python**
+                  
+### **Step 1: Create VPC using CloudFormation in AWS Console
+Set Up VPC Using Console:
 
-### **Step 1: Create an EKS cluster**
+In AWS console, create VPC, subnet, internet gateway, and route table.
 
-Create an EKS cluster and add node group
+### **Step 2: Create an EKS cluster**
 
-### **Step 2: Create a node group**
+Create an EKS cluster and add node group 
+```
+```
+![Screenshot 2024-06-11 192028](https://github.com/yogeshsunny05/CloudNative-MonitoringApp/assets/139520226/f2c798fb-9c54-4056-9dc0-13cd7d9c30cd)
+```
+```
+
+### **Step 3: Create a node group**
 
 Create a node group in the EKS cluster.
+```
+```
+![Screenshot 2024-06-11 230052](https://github.com/yogeshsunny05/CloudNative-MonitoringApp/assets/139520226/afdebc71-87ba-4e71-8c02-0d3f7a83a6ac)
+```
+```
+### **Step 4: Create namespace deployment and service**
+# Deployment Instructions
 
-### **Step 3: Create deployment and service**
+## YAML Configuration
 
-```jsx
-from kubernetes import client, config
+To create the namespace, deployment, and service, use the following YAML configuration:
 
-# Load Kubernetes configuration
-config.load_kube_config()
+```yaml
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: my-namespace
 
-# Create a Kubernetes API client
-api_client = client.ApiClient()
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudnative-monitoringapp-deployment
+  namespace: my-namespace
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: cloudnative-monitoringapp
+  template:
+    metadata:
+      labels:
+        app: cloudnative-monitoringapp
+    spec:
+      containers:
+      - name: cloudnative-monitoringapp
+        image: public.ecr.aws/v9e0r7f8/cloudnative-monitoringapp:latest
+        ports:
+        - containerPort: 5000
 
-# Define the deployment
-deployment = client.V1Deployment(
-    metadata=client.V1ObjectMeta(name="my-flask-app"),
-    spec=client.V1DeploymentSpec(
-        replicas=1,
-        selector=client.V1LabelSelector(
-            match_labels={"app": "my-flask-app"}
-        ),
-        template=client.V1PodTemplateSpec(
-            metadata=client.V1ObjectMeta(
-                labels={"app": "my-flask-app"}
-            ),
-            spec=client.V1PodSpec(
-                containers=[
-                    client.V1Container(
-                        name="my-flask-container",
-                        image="568373317874.dkr.ecr.us-east-1.amazonaws.com/my-cloud-native-repo:latest",
-                        ports=[client.V1ContainerPort(container_port=5000)]
-                    )
-                ]
-            )
-        )
-    )
-)
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloudnative-monitoringapp-service
+  namespace: my-namespace
+spec:
+  type: LoadBalancer
+  selector:
+    app: cloudnative-monitoringapp
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 5000
+```
+kubectl get deployment -n my-namespace (check deployments)
+kubectl get service -n my-namespace (check service)
+kubectl get pods -n my-namespace (to check the pods)
 
-# Create the deployment
-api_instance = client.AppsV1Api(api_client)
-api_instance.create_namespaced_deployment(
-    namespace="default",
-    body=deployment
-)
 
-# Define the service
-service = client.V1Service(
-    metadata=client.V1ObjectMeta(name="my-flask-service"),
-    spec=client.V1ServiceSpec(
-        selector={"app": "my-flask-app"},
-        ports=[client.V1ServicePort(port=5000)]
-    )
-)
-
-# Create the service
-api_instance = client.CoreV1Api(api_client)
-api_instance.create_namespaced_service(
-    namespace="default",
-    body=service
-)
 ```
 
-make sure to edit the name of the image on line 25 with your image Uri.
-
-- Once you run this file by running “python3 eks.py” deployment and service will be created.
-- Check by running following commands:
-
-```jsx
-kubectl get deployment -n default (check deployments)
-kubectl get service -n default (check service)
-kubectl get pods -n default (to check the pods)
 ```
 
-Once your pod is up and running, run the port-forward to expose the service
+![Screenshot 2024-06-11 224829](https://github.com/yogeshsunny05/CloudNative-MonitoringApp/assets/139520226/0982a0e3-c207-4f56-b123-63d2d40530d9)
 
-```bash
-kubectl port-forward service/<service_name> 5000:5000
+
 ```
+
+```
+
+
+Once your pod is up and running,
+This will start the Flask server in a EKS cluster .Use ElasticLoadBalancer end point http://a73cbda19311d4617bacce53d6230831-1956369547.ap-south-1.elb.amazonaws.com on your browser to access the application.
+
+This should direct you to your cloudnative-monitoringapp application running on your EKS cluster
+
+```
+```
+
+![Screenshot 2024-06-11 230504](https://github.com/yogeshsunny05/CloudNative-MonitoringApp/assets/139520226/d5726ef2-36dc-4b4a-959e-616eceac0de7)
+
