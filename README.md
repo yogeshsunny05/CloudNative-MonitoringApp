@@ -167,7 +167,7 @@ Create an EKS cluster and add node group
 Create a node group in the EKS cluster.
 ```
 ```
-![Screenshot 2024-06-11 230052](https://github.com/yogeshsunny05/CloudNative-MonitoringApp/assets/139520226/afdebc71-87ba-4e71-8c02-0d3f7a83a6ac)
+![Screenshot 2024-06-11 230859](https://github.com/yogeshsunny05/CloudNative-MonitoringApp/assets/139520226/b7a4c362-0d29-45c0-b836-4149423a9fe4)
 ```
 ```
 ### Step 4: Create namespace deployment and service
