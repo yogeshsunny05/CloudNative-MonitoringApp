@@ -1,4 +1,4 @@
-                                   ## Cloud Native Resource Monitoring Python App on K8s 
+                                   # **Cloud Native Resource Monitoring Python App on K8s!**
 
 ## Things you will Learn 
 
@@ -111,11 +111,9 @@ docker run -p 5000:5000 <image_name>
 This will start the Flask server in a Docker container on **`localhost:5000`**. Navigate to [http://localhost:5000/](http://localhost:5000/) on your browser to access the application.
 ```
 ```
-
 ![Screenshot 2024-06-10 163024](https://github.com/yogeshsunny05/CloudNative-MonitoringApp/assets/139520226/0abf2c26-871b-4c45-90b8-c5cf002904d5)
 ```
 ```
-
 ## Part 3: Pushing the Docker image to ECR
 
 ### Step 1: Create an ECR repository
@@ -225,27 +223,15 @@ kubectl get service -n my-namespace (check service)
 kubectl get pods -n my-namespace (to check the pods)
 ```
 
-```
-
-```
-
 ![Screenshot 2024-06-11 224829](https://github.com/yogeshsunny05/CloudNative-MonitoringApp/assets/139520226/0982a0e3-c207-4f56-b123-63d2d40530d9)
 
-
-```
-
-```
 Once your pod is up and running,
-```
-```
+
 ![Screenshot 2024-06-11 230504](https://github.com/yogeshsunny05/CloudNative-MonitoringApp/assets/139520226/d5726ef2-36dc-4b4a-959e-616eceac0de7)
 
 This will start the Flask server in a EKS cluster .Use ElasticLoadBalancer end point http://a73cbda19311d4617bacce53d6230831-1956369547.ap-south-1.elb.amazonaws.com on your browser to access the application.
 
 This should direct you to your cloudnative-monitoringapp application running on your EKS cluster
-
-```
-```
 
 ![Screenshot 2024-06-11 230707](https://github.com/yogeshsunny05/CloudNative-MonitoringApp/assets/139520226/805b5943-7463-4391-9876-0aa6f40bc8bd)
 
