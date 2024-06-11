@@ -219,10 +219,11 @@ spec:
     port: 80
     targetPort: 5000
 ```
+```
 kubectl get deployment -n my-namespace (check deployments)
 kubectl get service -n my-namespace (check service)
 kubectl get pods -n my-namespace (to check the pods)
-
+```
 
 ```
 
